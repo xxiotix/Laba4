@@ -1,0 +1,24 @@
+﻿using Laba4.Models;
+using System.Xml.Linq;
+
+public class Bridge : ConstructionProject
+{
+    public double Length { get; set; }
+
+    public double CalculateLoad()
+    {
+        return Length * 1000;
+    }
+
+    public override void ExecuteStage()
+    {
+        Console.WriteLine($"Виконується етап будівництва мосту '{Name}'");
+    }
+
+    public override decimal CalculateBudget()
+    {
+        return TotalCost * 1.15m; // +15% для мостів (складніша конструкція)
+    }
+
+    public override string ProjectType => "Міст";
+}
