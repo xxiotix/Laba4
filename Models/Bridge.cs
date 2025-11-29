@@ -17,7 +17,7 @@ public class Bridge : ConstructionProject
 
     public override decimal CalculateBudget()
     {
-        return TotalCost * 1.15m; // +15% для мостів (складніша конструкція)
+        return TotalCost * 1.15m;
     }
 
     public override string ProjectType => "Міст";
