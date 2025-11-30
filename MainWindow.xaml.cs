@@ -1,4 +1,5 @@
-﻿using Laba4.Models;
+﻿using Laba4.Interfaces;
+using Laba4.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -18,16 +19,18 @@ namespace ConstructionApp
 
         private void ProjectTypeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            HouseFields.Visibility = Visibility.Collapsed;
+            BridgeFields.Visibility = Visibility.Collapsed;
+            MallFields.Visibility = Visibility.Collapsed;
+
             if (ProjectTypeCombo.SelectedIndex == 0) // Житловий будинок
-            {
                 HouseFields.Visibility = Visibility.Visible;
-                BridgeFields.Visibility = Visibility.Collapsed;
-            }
+
             else if (ProjectTypeCombo.SelectedIndex == 1) // Міст
-            {
-                HouseFields.Visibility = Visibility.Collapsed;
                 BridgeFields.Visibility = Visibility.Visible;
-            }
+
+            else if (ProjectTypeCombo.SelectedIndex == 2) // Торговий центр
+                MallFields.Visibility = Visibility.Visible;
         }
 
         private void AddProject_Click(object sender, RoutedEventArgs e)
@@ -43,6 +46,7 @@ namespace ConstructionApp
                         Deadline = DeadlineDatePicker.SelectedDate ?? DateTime.Now.AddMonths(12),
                         AppartmentsCount = int.Parse(ApartmentsTextBox.Text)
                     };
+                    house.AddAuditRecord("Проєкт створено.");
                     projects.Add(house);
                 }
                 else if (ProjectTypeCombo.SelectedIndex == 1) // Міст
@@ -54,7 +58,23 @@ namespace ConstructionApp
                         Deadline = DeadlineDatePicker.SelectedDate ?? DateTime.Now.AddMonths(24),
                         Length = double.Parse(LengthTextBox.Text)
                     };
+                    bridge.AddAuditRecord("Проєкт створено.");
                     projects.Add(bridge);
+                }
+                else if (ProjectTypeCombo.SelectedIndex == 2) // Торговий центр
+                {
+                    var mall = new ShoppingMall
+                    {
+                        Name = NameTextBox.Text,
+                        TotalCost = decimal.Parse(CostTextBox.Text),
+                        Deadline = DeadlineDatePicker.SelectedDate ?? DateTime.Now.AddMonths(18),
+                        ShopsCount = int.Parse(ShopsCountTextBox.Text),
+                        TotalArea = double.Parse(MallAreaTextBox.Text),
+                        Location = $"{LatitudeTextBox.Text}, {LongitudeTextBox.Text}"
+                    };
+
+                    mall.AddAuditRecord("Проєкт створено.");
+                    projects.Add(mall);
                 }
 
                 ProjectsListView.ItemsSource = null;
@@ -90,6 +110,7 @@ namespace ConstructionApp
             if (ProjectsListView.SelectedItem is ConstructionProject selectedProject)
             {
                 selectedProject.ExecuteStage();
+                selectedProject.AddAuditRecord("Виконано етап будівництва.");
                 MessageBox.Show($"Етап виконано для проєкту: {selectedProject.Name}", "Етап виконано",
                               MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -109,6 +130,8 @@ namespace ConstructionApp
             {
                 decimal budget = selectedProject.CalculateBudget();
                 string projectType = selectedProject is ResidentialBuilding ? "житлового будинку" : "мосту";
+                selectedProject.AddAuditRecord("Розраховано бюджет.");
+
 
                 MessageBox.Show($"Розрахунковий бюджет для {projectType} '{selectedProject.Name}': {budget:0.00} ₴",
                               "Розрахунок бюджету", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -130,6 +153,7 @@ namespace ConstructionApp
 
                 if (result == MessageBoxResult.Yes)
                 {
+                    selectedProject.AddAuditRecord("Проєкт видалено.");
                     projects.Remove(selectedProject);
 
                     ProjectsListView.ItemsSource = null;
@@ -162,5 +186,37 @@ namespace ConstructionApp
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void ShowAuditHistory_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProjectsListView.SelectedItem is ConstructionProject project)
+            {
+                var history = project.GetAuditRecords();
+                string result = string.Join("\n", history);
+
+                MessageBox.Show(
+                    string.IsNullOrWhiteSpace(result) ? "Історія пуста." : result,
+                    "Історія змін",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Будь ласка, виберіть проєкт.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private void ShowReport_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProjectsListView.SelectedItem is IReportable reportable)
+            {
+                string report = reportable.GenerateReport();
+                MessageBox.Show(report, "Звіт про проєкт", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Обраний проєкт не підтримує звітність.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+
     }
 }

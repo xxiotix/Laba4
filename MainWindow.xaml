@@ -12,6 +12,7 @@
                     <ComboBox x:Name="ProjectTypeCombo" Margin="0,5">
                         <ComboBoxItem Content="Житловий будинок"/>
                         <ComboBoxItem Content="Міст"/>
+                        <ComboBoxItem Content="Торговельний центр"/>
                     </ComboBox>
 
                     <TextBlock Text="Назва проєкту:" FontWeight="Bold" Margin="0,10,0,0"/>
@@ -22,6 +23,12 @@
 
                     <TextBlock Text="Термін виконання:" FontWeight="Bold" Margin="0,10,0,0"/>
                     <DatePicker x:Name="DeadlineDatePicker" Margin="0,5"/>
+
+                    <TextBlock Text="Координата широти:" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBox x:Name="LatitudeTextBox" Margin="0,5"/>
+
+                    <TextBlock Text="Координата довготи:" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBox x:Name="LongitudeTextBox" Margin="0,5"/>
 
                     <!-- Поля для будинку -->
                     <StackPanel x:Name="HouseFields" Visibility="Collapsed">
@@ -35,6 +42,15 @@
                         <TextBlock Text="Довжина мосту (м):" FontWeight="Bold" Margin="0,10,0,0"/>
                         <TextBox x:Name="LengthTextBox" Margin="0,5"/>
                         <Button Content="Розрахувати навантаження" Click="CalculateLoad_Click" Margin="0,5"/>
+                    </StackPanel>
+
+                    <!-- Поля для торговельного центру -->
+                    <StackPanel x:Name="MallFields" Visibility="Collapsed">
+                        <TextBlock Text="Кількість магазинів:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="ShopsCountTextBox" Margin="0,5"/>
+
+                        <TextBlock Text="Загальна площа (м²):" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="MallAreaTextBox" Margin="0,5"/>
                     </StackPanel>
 
                     <Button Content="Додати проєкт" Click="AddProject_Click" Margin="0,20" Padding="10,5"/>
@@ -58,7 +74,9 @@
                     <StackPanel Orientation="Horizontal" Margin="0,10">
                         <Button Content="Виконати етап" Click="ExecuteStage_Click" Margin="0,0,10,0"/>
                         <Button Content="Розрахувати бюджет" Click="CalculateBudget_Click" Margin="0,0,10,0"/>
-                        <Button Content="Видалити" Click="DeleteProject_Click"/>
+                        <Button Content="Видалити" Click="DeleteProject_Click" Margin="0,0,10,0"/>
+                        <Button Content="Показати історію змін" Click="ShowAuditHistory_Click" Margin="0,0,10,0"/>
+                        <Button Content="Показати звіт" Click="ShowReport_Click" Margin="0,0,10,0"/>
                     </StackPanel>
                 </StackPanel>
             </TabItem>

@@ -1,9 +1,11 @@
-﻿using Laba4.Models;
+﻿using Laba4.Interfaces;
+using Laba4.Models;
 using System.Xml.Linq;
 
-public class Bridge : ConstructionProject
+public class Bridge : ConstructionProject, IHasLocation
 {
     public double Length { get; set; }
+    public string Location { get; set; }
 
     public double CalculateLoad()
     {

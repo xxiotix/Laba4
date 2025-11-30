@@ -4,6 +4,7 @@ using System.Xml.Linq;
 public class ResidentialBuilding : ConstructionProject
 {
     public int AppartmentsCount { get; set; }
+    public string Location { get; set; }
 
     public double CalculateArea()
     {
