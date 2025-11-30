@@ -6,6 +6,10 @@ public class Bridge : ConstructionProject, IHasLocation
 {
     public double Length { get; set; }
     public string Location { get; set; }
+    public string GetLocationInfo()
+    {
+        return $"Локація проєкту: {Location}";
+    }
 
     public double CalculateLoad()
     {

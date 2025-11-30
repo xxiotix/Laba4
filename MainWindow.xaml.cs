@@ -105,6 +105,18 @@ namespace ConstructionApp
             TotalApartmentsText.Text = $"Загальна кількість квартир: {ProjectCalculator.TotalApartments(projects)}";
             TotalBudgetText.Text = $"Загальний бюджет: {ProjectCalculator.TotalBudget(projects):0.00}₴";
         }
+        private void ShowLocation_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProjectsListView.SelectedItem is IHasLocation projectWithLocation)
+            {
+                string locationInfo = projectWithLocation.GetLocationInfo();
+                MessageBox.Show(locationInfo, "Інформація про локацію", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Обраний проєкт не має інформації про локацію.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
         private void ExecuteStage_Click(object sender, RoutedEventArgs e)
         {
             if (ProjectsListView.SelectedItem is ConstructionProject selectedProject)

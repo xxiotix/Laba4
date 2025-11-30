@@ -9,9 +9,12 @@ namespace Laba4.Models
     public class ShoppingMall : ConstructionProject, IHasLocation, IAuditable, IReportable
     {
         public int ShopsCount { get; set; }
-        public double TotalArea { get; set; } // площа торгового центру
-
+        public double TotalArea { get; set; }
         public string Location { get; set; }
+        public string GetLocationInfo()
+        {
+            return $"Локація проєкту: {Location}";
+        }
 
         public override void ExecuteStage()
         {
@@ -31,8 +34,8 @@ namespace Laba4.Models
                    $"Магазинів: {ShopsCount}\n" +
                    $"Площа: {TotalArea} м²\n" +
                    $"Вартість: {TotalCost}\n" +
-                   $"Термін: {Deadline}\n" +
-                   $"Локація: {Location}\n";
+                   $"Термін: {Deadline:yyyy-MM-dd}\n" +
+                   $"{GetLocationInfo()}\n";
         }
     }
 }

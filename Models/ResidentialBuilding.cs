@@ -5,6 +5,10 @@ public class ResidentialBuilding : ConstructionProject
 {
     public int AppartmentsCount { get; set; }
     public string Location { get; set; }
+    public string GetLocationInfo()
+    {
+        return $"Локація проєкту: {Location}";
+    }
 
     public double CalculateArea()
     {

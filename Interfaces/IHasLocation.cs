@@ -7,5 +7,6 @@ namespace Laba4.Interfaces
     public interface IHasLocation
     {
         string Location { get; set; }
+        string GetLocationInfo();
     }
 }
